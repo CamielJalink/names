@@ -3,12 +3,18 @@ import path from "path";
 
 const app = express();
 let port = Number(process.env.PORT) || 9000;
-app.use(express.static(path.join('../clientside/build')));
+
+const indexPath: string = path.join('./build')
+app.use(express.static(indexPath));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join('../clientside/build', 'index.html'));
+  res.sendFile(indexPath + '/index.html');
+});
+
+app.get('*', function (req, res) {
+  res.redirect('/');
 });
 
 app.listen(port, process.env.IP || '', () => {
-  console.log("Server is running");
+  console.log("Server is running on " + port);
 });
