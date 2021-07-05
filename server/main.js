@@ -9,8 +9,16 @@ var app = express_1.default();
 var port = Number(process.env.PORT) || 9000;
 var indexPath = path_1.default.join('./build');
 app.use(express_1.default.static(indexPath));
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 app.get('/', function (req, res) {
     res.sendFile(indexPath + '/index.html');
+});
+app.post('/addName', function (req, res) {
+    var postData = req.body;
+    console.log(postData);
+    var response = true;
+    res.json({ success: response });
 });
 app.get('*', function (req, res) {
     res.redirect('/');
