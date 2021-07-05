@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import NamesController from "./src/namesController";
 
 const app = express();
 let port = Number(process.env.PORT) || 9000;
@@ -9,14 +10,15 @@ app.use(express.static(indexPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const namesController = new NamesController();
+
 app.get('/', (req, res) => {
   res.sendFile(indexPath + '/index.html');
 });
 
 app.post('/addName', function (req, res) {
   const postData = req.body;
-  console.log(postData);
-  let response: boolean = true;
+  let response: boolean = namesController.addName(postData.name, postData.gender);
   res.json({ success: response });
 })
 
