@@ -12,15 +12,16 @@ app.use(express.urlencoded({ extended: true }));
 
 const namesController = new NamesController();
 
-app.get('/', (req, res) => {
-  res.sendFile(indexPath + '/index.html');
-});
-
 app.post('/addName', function (req, res) {
+  console.log(req.body);
   const postData = req.body;
   let response: boolean = namesController.addName(postData.name, postData.gender);
   res.json({ success: response });
 })
+
+app.get('/', (req, res) => {
+  res.sendFile(indexPath + '/index.html');
+});
 
 app.get('*', function (req, res) {
   res.redirect('/');

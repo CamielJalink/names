@@ -22,6 +22,9 @@
 
 <script>
 import BackButton from '../components/BackButton.vue';
+import NameService from '../services/nameService';
+
+const nameService = new NameService(); // Todo: this should become a reuseable instance of nameService
 
 export default {
   name: "Add",
@@ -29,8 +32,11 @@ export default {
     BackButton
   },
   methods: {
-    addName() {
-      alert(this.name + " " + this.gender);
+    async addName() {
+      await nameService.addName(this.name, this.gender)
+        .then((responseData) => {
+          console.log(responseData);
+        })
     },
   },
   data() {
