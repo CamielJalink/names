@@ -13,8 +13,10 @@
         <input class="radioButton" type="radio" value="Girl" v-model="gender" />
       </div>
 
-      <button class="button addButton" type="button" @click="addName()">Add</button>
+      <button :disabled="!isActive" class="button addButton" type="button" @click="addName()">Add</button>
 
+      <h4 v-if="showNameAddDuplicate" class="errorMessage">Name already found on the shortlist!</h4>
+      <h4 v-if="showNameAddSuccess" class="successMessage">Name successfully added to the shortlist!</h4>
     </form>
     <BackButton />
   </div>
@@ -33,16 +35,28 @@ export default {
   },
   methods: {
     async addName() {
+      this.isActive = false;
       await nameService.addName(this.name, this.gender)
         .then((responseData) => {
-          console.log(responseData);
+          if(responseData.success) { // If a success, clear the name and show that the name was added
+            this.name = '';
+            this.showNameAddDuplicate = false;
+            this.showNameAddSuccess = true;
+          } else{ // if not a succes, maybe some warning and don't clear the name?
+            this.showNameAddDuplicate = true;
+            this.showNameAddSuccess = false;
+          }
+          this.isActive = true;
         })
     },
   },
   data() {
     return {
       name: '',
-      gender: ''
+      gender: '',
+      isActive: true,
+      showNameAddDuplicate: false,
+      showNameAddSuccess: false
     }
   }
 }
@@ -101,4 +115,18 @@ export default {
     margin-top: 2rem;
   }
 
+  .addButton:disabled {
+    background-color: lightgray;
+  }
+
+  .errorMessage {
+    color: #DC602E;
+    margin-bottom: 0;
+    margin-top: 2.5rem;
+  }
+
+  .successMessage {
+    margin-bottom: 0;
+    margin-top: 2.5rem;
+  }
 </style>
