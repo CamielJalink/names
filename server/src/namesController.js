@@ -4,45 +4,52 @@ var fs_1 = require("fs");
 var util_1 = require("util");
 var NamesController = /** @class */ (function () {
     function NamesController() {
-        var _this = this;
         this.allNames = [];
-        this.getAllNames().then(function (names) {
-            _this.allNames = names;
-            console.log(_this.allNames);
-        });
+        this.promisifiedReadFile = util_1.promisify(fs_1.readFile);
+        this.promisifiedWriteFile = util_1.promisify(fs_1.writeFile);
+        this.getAllNames();
     }
+    // Reads json "database"
     NamesController.prototype.getAllNames = function () {
-        var promisifyReadFile = util_1.promisify(fs_1.readFile);
-        var names = [];
-        return promisifyReadFile("./src/dummyDB.json", "utf8")
+        var _this = this;
+        return this.promisifiedReadFile("./src/dummyDB.json", "utf8")
             .then(function (input) {
             if (input && input.length > 0) {
-                console.log(input);
+                _this.allNames = JSON.parse(input);
             }
-            return names;
         })
             .catch(function (error) {
             throw (error);
         });
     };
-    NamesController.prototype.writeName = function () {
-        // import { writeFile } from "fs";
-        // import { promisify } from "util";
-        // import Transaction from "./transaction";
-        // export default function saveTransactions(transactions: Transaction[]) {
-        //   const promisiedWriteFile = promisify(writeFile);
-        //   console.log("hello there");
-        //   let JsonTransactions = JSON.stringify(transactions);
-        //   return promisiedWriteFile('./data/transactions.json', JsonTransactions, 'utf8').then(() => {
-        //     return;
-        //   })
-        // }
+    // writes names array to the json "database"
+    NamesController.prototype.writeNamesToDB = function () {
+        return this.promisifiedWriteFile("./src/dummyDB.json", JSON.stringify(this.allNames), 'utf8');
     };
+    // Check if a name isn't on the list yet, and then add it. 
     NamesController.prototype.addName = function (name, gender) {
-        // uppercase the name
-        // try to put the name in the database, or check if there's a duplicate
-        var isValidName = false;
-        return isValidName;
+        var isNewName = true;
+        name = name.toLowerCase();
+        this.allNames.forEach(function (savedName) {
+            if (savedName.name.toLowerCase() === name && savedName.gender === gender) {
+                isNewName = false;
+            }
+        });
+        // If it's a new name, capitalize it's first letter and add it to the list of names.
+        if (isNewName) {
+            var nameInitialCase = name.charAt(0).toUpperCase() + name.slice(1);
+            var newName = {
+                name: nameInitialCase,
+                gender: gender
+            };
+            this.allNames.push(newName);
+            return this.writeNamesToDB().then(function () {
+                return true;
+            });
+        }
+        else {
+            return Promise.resolve(false);
+        }
     };
     return NamesController;
 }());

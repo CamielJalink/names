@@ -14,10 +14,10 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 var namesController = new namesController_1.default();
 app.post('/addName', function (req, res) {
-    console.log(req.body);
     var postData = req.body;
-    var response = namesController.addName(postData.name, postData.gender);
-    res.json({ success: response });
+    return namesController.addName(postData.name, postData.gender).then(function (response) {
+        res.json({ "success": response });
+    });
 });
 app.get('/', function (req, res) {
     res.sendFile(indexPath + '/index.html');

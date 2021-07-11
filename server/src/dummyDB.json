@@ -1,6 +1,1 @@
-{
- "Names": [
-   {"name": "Test", "gender": "Girl"},
-   {"name": "Test2", "gender": "Boy"}
- ]
-}
+[{"name":"Felix","gender":"Boy"},{"name":"Felix","gender":"Girl"},{"name":"Jan-felix","gender":"Girl"}]

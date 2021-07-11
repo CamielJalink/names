@@ -13,10 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 const namesController = new NamesController();
 
 app.post('/addName', function (req, res) {
-  console.log(req.body);
   const postData = req.body;
-  let response: boolean = namesController.addName(postData.name, postData.gender);
-  res.json({ success: response });
+  return namesController.addName(postData.name, postData.gender).then((response) => {
+    res.json({ "success": response });
+  })
 })
 
 app.get('/', (req, res) => {
