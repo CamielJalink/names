@@ -19,11 +19,13 @@
       <h4 v-if="showNameAddSuccess" class="successMessage">Name successfully added to the shortlist!</h4>
     </form>
     <BackButton />
+    <GenderSelect @testEvent="logTestEvent" />
   </div>
 </template>
 
 <script>
 import BackButton from '../components/BackButton.vue';
+import GenderSelect from '../components/GenderSelect.vue';
 import NameService from '../services/nameService';
 
 const nameService = new NameService(); // Todo: this should become a reuseable instance of nameService
@@ -31,7 +33,8 @@ const nameService = new NameService(); // Todo: this should become a reuseable i
 export default {
   name: "Add",
   components: {
-    BackButton
+    BackButton,
+    GenderSelect
   },
   methods: {
     async addName() {
@@ -49,6 +52,9 @@ export default {
           this.isActive = true;
         })
     },
+    logTestEvent() {
+      console.log("I am logging test event from add.vue");
+    }
   },
   data() {
     return {
