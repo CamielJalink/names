@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1 class="pageTitle">Pick your favorite!</h1>
+    <GenderSelect @genderSelected="genderSelected" />
     <BackButton />
-    <GenderSelect @testEvent="logTestEvent" />
   </div>
 </template>
 
@@ -17,8 +17,8 @@ export default {
     GenderSelect
   },
   methods: {
-    logTestEvent() {
-      console.log("Hallo uit tweede plek, namelijk rate");
+    genderSelected(gender) {
+      console.log("Hallo uit tweede plek, namelijk rate", gender);
     }
   }
 }

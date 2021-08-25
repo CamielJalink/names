@@ -1,18 +1,13 @@
-// Selecteer je gender, man of vrouw. 
-
-// Als je een gender hebt gekozen, gooi een event 'genderGekozen' met payload 'man' of 'vrouw'. 
-
-// Hoe werkt het afvangen van dit event? Alleen op gerenderde items denk ik? 
-
-
-// Test: 
-// Child component gooit event.
-// Ouder 1 console.logged X
-// Ouder 2 console.logged YHuisa
-
 <template>
   <div>
-    <button @click="throwEvent">Event Test</button>
+    <div class="radioPair">
+      <label class="radioLabel">Boy</label>
+      <input class="radioButton" type="radio" value="Boy" v-model="gender" @click="throwGenderSelected('Boy')" />
+    </div>
+    <div class="radioPair">
+      <label class="radioLabel">Girl</label>
+      <input class="radioButton" type="radio" value="Girl" v-model="gender" @click="throwGenderSelected('Girl')" />
+    </div>
   </div>
 </template>
 
@@ -21,10 +16,36 @@
 export default {
   name: 'GenderSelect',
   methods: {
-    throwEvent() {
-      console.log('going to throw testEvent event');
-      this.$emit('testEvent');
+    throwGenderSelected(gender) {
+      this.$emit('genderSelected', gender);
+    }
+  },
+  data() {
+    return {
+      gender: '',
     }
   }
 }
 </script>
+
+<style scoped>
+  .radioPair {
+    display: flex;
+    align-items: center;
+  }
+
+  .radioLabel {
+    color: #156064;
+    font-family: IndieFlower;
+    font-size: 1.8rem;
+    margin-left: auto;
+  }
+
+  .radioButton {
+    display: block;
+    margin-left: auto;
+    margin-right: 5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+</style>

@@ -4,14 +4,7 @@
 
     <form class="form">
       <input class="nameInput" type="text" v-model="name" placeholder="Name" />
-      <div class="radioPair">
-        <label class="radioLabel">Boy</label>
-        <input class="radioButton" type="radio" value="Boy" v-model="gender" />
-      </div>
-      <div class="radioPair">
-        <label class="radioLabel">Girl</label>
-        <input class="radioButton" type="radio" value="Girl" v-model="gender" />
-      </div>
+      <GenderSelect @genderSelected="genderSelected" />
 
       <button :disabled="!isActive" class="button addButton" type="button" @click="addName()">Add</button>
 
@@ -19,7 +12,6 @@
       <h4 v-if="showNameAddSuccess" class="successMessage">Name successfully added to the shortlist!</h4>
     </form>
     <BackButton />
-    <GenderSelect @testEvent="logTestEvent" />
   </div>
 </template>
 
@@ -52,7 +44,8 @@ export default {
           this.isActive = true;
         })
     },
-    logTestEvent() {
+    genderSelected(gender) {
+      console.log(gender);
       console.log("I am logging test event from add.vue");
     }
   },
@@ -95,26 +88,6 @@ export default {
 
   .nameInput::placeholder {
     color: lightslategrey;
-  }
-
-  .radioPair {
-    display: flex;
-    align-items: center;
-  }
-
-  .radioLabel {
-    color: #156064;
-    font-family: IndieFlower;
-    font-size: 1.8rem;
-    margin-left: auto;
-  }
-
-  .radioButton {
-    display: block;
-    margin-left: auto;
-    margin-right: 5rem;
-    height: 1.5rem;
-    width: 1.5rem;
   }
 
   .button.addButton {
