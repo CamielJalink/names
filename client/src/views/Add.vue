@@ -8,8 +8,9 @@
 
       <button :disabled="!isActive" class="button addButton" type="button" @click="addName()">Add</button>
 
-      <h4 v-if="showNameAddDuplicate" class="errorMessage">Name already found on the shortlist!</h4>
+      <h4 v-if="showNameAddDuplicate" class="errorMessage">Name already found on the shortlist</h4>
       <h4 v-if="showNameAddSuccess" class="successMessage">Name successfully added to the shortlist!</h4>
+      <h4 v-if="showInvalidInput" class="errorMessage">Name or gender wasn't specified</h4>
     </form>
     <BackButton />
   </div>
@@ -30,23 +31,28 @@ export default {
   },
   methods: {
     async addName() {
-      this.isActive = false;
-      await nameService.addName(this.name, this.gender)
-        .then((responseData) => {
-          if(responseData.success) { // If a success, clear the name and show that the name was added
-            this.name = '';
-            this.showNameAddDuplicate = false;
-            this.showNameAddSuccess = true;
-          } else{ // if not a succes, maybe some warning and don't clear the name?
-            this.showNameAddDuplicate = true;
-            this.showNameAddSuccess = false;
-          }
-          this.isActive = true;
-        })
+      if(!this.gender || this.gender === "" || !this.name || this.name === "") {
+        this.showInvalidInput = true;
+        this.showNameAddDuplicate = false;
+        this.showNameAddSuccess = false;
+      } else {
+        this.isActive = false;
+        await nameService.addName(this.name, this.gender)
+          .then((responseData) => {
+            if(responseData.success) { // If a success, clear the name and show that the name was added
+              this.name = '';
+              this.showNameAddDuplicate = false;
+              this.showNameAddSuccess = true;
+            } else{ // if not a succes, maybe some warning and don't clear the name?
+              this.showNameAddDuplicate = true;
+              this.showNameAddSuccess = false;
+            }
+            this.isActive = true;
+          })
+      }
     },
     genderSelected(gender) {
-      console.log(gender);
-      console.log("I am logging test event from add.vue");
+      this.gender = gender;
     }
   },
   data() {
@@ -55,7 +61,8 @@ export default {
       gender: '',
       isActive: true,
       showNameAddDuplicate: false,
-      showNameAddSuccess: false
+      showNameAddSuccess: false,
+      showInvalidInput: false
     }
   }
 }
