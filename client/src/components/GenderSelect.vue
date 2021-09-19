@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="blockContainer" :style="{ width: componentWidth }">
     <div class="radioPair">
       <label class="radioLabel">Boy</label>
       <input class="radioButton" type="radio" value="Boy" v-model="gender" @click="throwGenderSelected('Boy')" />
@@ -20,6 +20,9 @@ export default {
       this.$emit('genderSelected', gender);
     }
   },
+  props: [
+    'componentWidth'
+  ],
   data() {
     return {
       gender: '',
@@ -29,22 +32,24 @@ export default {
 </script>
 
 <style scoped>
+  .blockContainer {
+    display: block;
+    margin: 0 auto;
+  }
+
   .radioPair {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   .radioLabel {
     color: #156064;
     font-family: IndieFlower;
     font-size: 1.8rem;
-    margin-left: auto;
   }
 
   .radioButton {
-    display: block;
-    margin-left: auto;
-    margin-right: 5rem;
     height: 1.5rem;
     width: 1.5rem;
   }

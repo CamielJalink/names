@@ -4,7 +4,7 @@
 
     <form class="form">
       <input class="nameInput" type="text" v-model="name" placeholder="Name" />
-      <GenderSelect @genderSelected="genderSelected" />
+      <GenderSelect @genderSelected="genderSelected" componentWidth="50%" />
 
       <button :disabled="!isActive" class="button addButton" type="button" @click="addName()">Add</button>
 

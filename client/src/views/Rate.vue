@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="pageTitle">Pick your favorite!</h1>
-    <GenderSelect @genderSelected="genderSelected" />
+    <GenderSelect @genderSelected="genderSelected" componentWidth="35%" />
     <BackButton />
   </div>
 </template>
@@ -23,3 +23,9 @@ export default {
   }
 }
 </script>
+
+<style scope>
+  .pageTitle {
+    margin-bottom: 2rem;
+  }
+</style>
